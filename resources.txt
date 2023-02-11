@@ -1,0 +1,12 @@
+this will be a repository of the links/resources that i have found (while making this)
+
+
+Requests: https://docs.python-requests.org/en/latest/user/quickstart/#make-a-request (this is how u throw it a request but more importantly how to read it)
+
+Example tba api (thanks 1418): https://github.com/frc1418/tbapy/blob/98af75a7f86e5b00cbfc5c896eedc3ed858bd63d/tbapy/main.py#L21
+
+Where the blue alliance info is found (which requests are needed): https://www.thebluealliance.com/apidocs/v3
+
+Cachecontrol docs: https://cachecontrol.readthedocs.io/en/latest/
+
+tba account (u need the api key from here): https://www.thebluealliance.com/account 
