@@ -1,6 +1,6 @@
 # how do i make a key be secret this is so hard
 
-import os
+import json # parser
 import requests 
 # http requests
 # let's pretend i have this package
@@ -10,6 +10,13 @@ from cachecontrol import CacheControl
 
 
 link = 'https://www.thebluealliance.com/api/v3'
+
+
+def getRequest(message, request):
+    print('\n\n'+message+':')
+    response = session.get(link + request)
+    return response
+
 
 def printStuff(stuff):
     # treat this as a str obj
@@ -22,20 +29,35 @@ def printStuff(stuff):
 session = CacheControl(requests.Session())
 session.headers.update({'X-TBA-Auth-Key': input('What is your api key thing?\n')})
 
-print('\n\nserver status:')
-# get server status
-response = session.get(link + '/status')
-printStuff(response)
-# wow i got a resposne
+'''
+get('server status', '/status')
+'''
 
-print('frc 840:')
-response = session.get(link + '/team/frc840')
-printStuff(response)
-
-print('frc 254:')
-response = session.get(link + '/team/frc254')
+'''
+print('2022 keys:')
+response = session.get(link + '/events/2022/keys')
 printStuff(response)
 
+print('2023 keys:')
+response = session.get(link + '/events/2023/keys')
+printStuff(response)
+'''
 
-# use session.get(link + '/teams/[page]/keys') to get a list of keys
-# it should just be "frc" + team number
+'''
+response = session.get(link + '/match/2022casj_qm49')
+printStuff(response)
+'''
+
+
+
+dump = getRequest('team codes', '/event/2023casj/teams/simple')
+dump = dump.text
+
+dump_ls = json.loads(dump)
+# actually a list of dicts
+teams_ls = []
+for team_dict in dump_ls:
+    teams_ls.append(int(team_dict['team_number']))
+
+teams_ls.sort()
+print(teams_ls)
