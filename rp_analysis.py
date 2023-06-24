@@ -181,11 +181,32 @@ final_rp_data = [[] for _ in range(7)]
 for index in range(7):
     final_rp_data[index] = condensed_rp_data[index][:len(condensed_rp_data[index]) - 1]
 
-final_rp_data.append(final_rp_data[0])
-final_rp_data = final_rp_data[1:]
-final_rp_data = final_rp_data[::-1]
 
 
-axis = sns.heatmap(final_rp_data, cmap="crest", linewidths=0.5, annot=True, fmt='.3g', xticklabels=['1-1', '2-0', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2'], yticklabels=['     Worlds', '     Week 6', '     Week 5', '     Week 4', '     Week 3', '     Week 2', '     Week 1'])
-axis.set(xlabel='Ranking Point scores', ylabel='')
-plt.show()
+user_in = input('\nWould you like the data to be normalized or raw?\n>> ')
+
+if user_in.strip() == 'raw':
+    final_rp_data.append(final_rp_data[0])
+    final_rp_data = final_rp_data[1:]
+    final_rp_data = final_rp_data[::-1]
+    axis = sns.heatmap(final_rp_data, cmap="crest", linewidths=0.5, annot=True, fmt='.3g', xticklabels=['1-1', '2-0', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2'], yticklabels=['     Worlds', '     Week 6', '     Week 5', '     Week 4', '     Week 3', '     Week 2', '     Week 1'])
+    axis.set(xlabel='Ranking Point scores', ylabel='')
+    plt.show()
+else:
+    # normalization
+    for i in range(len(final_rp_data)):
+        for j in range(len(final_rp_data[0])):
+            final_rp_data[i][j] /= condensed_rp_data[i][11]
+        
+    final_rp_data.append(final_rp_data[0])
+    final_rp_data = final_rp_data[1:]
+    final_rp_data = final_rp_data[::-1]
+
+    axis = sns.heatmap(final_rp_data, cmap="crest", linewidths=0.5, annot=True, vmin=0, vmax=1, fmt='.2%', xticklabels=['1-1', '2-0', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2'], yticklabels=['     Worlds', '     Week 6', '     Week 5', '     Week 4', '     Week 3', '     Week 2', '     Week 1'])
+    axis.set(xlabel='Ranking Point scores', ylabel='')
+    
+    cbar = axis.collections[0].colorbar
+    cbar.set_ticks([0, .25, .5, .75, 1])
+    cbar.set_ticklabels(['0%', '25%', '50%', '75%', '100%'])
+    
+    plt.show()
