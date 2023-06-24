@@ -3,7 +3,7 @@ import requests
 from cachecontrol import CacheControl
 
 link = 'https://www.thebluealliance.com/api/v3'
-print('\n')
+print('\nEvents parsed:\n')
 
 
 
@@ -18,7 +18,7 @@ def getRequest(r):
 
 
 session = CacheControl(requests.Session())
-session.headers.update({'X-TBA-Auth-Key': 'Jz4XXw75F3bnX0rMP3F1F2wavwDNFDRwx5TzUfRpabByH5KyeieOzQcmCyyMCuMd'})
+session.headers.update({'X-TBA-Auth-Key': '9VPYK2JYrepUcCyy4TqKAxgicINJdbYEy7qjtvi9vm70RHvShu3dc1vcnsARST11'})
 
 
 
@@ -176,4 +176,16 @@ for week_ind in range(len(rp_data)):
         for index in range(12):
             condensed_rp_data[week_ind][index] += event[index]
 
-print(condensed_rp_data)
+final_rp_data = [[] for _ in range(7)]
+
+for index in range(7):
+    final_rp_data[index] = condensed_rp_data[index][:len(condensed_rp_data[index]) - 1]
+
+final_rp_data.append(final_rp_data[0])
+final_rp_data = final_rp_data[1:]
+final_rp_data = final_rp_data[::-1]
+
+
+axis = sns.heatmap(final_rp_data, cmap="crest", linewidths=0.5, annot=True, fmt='.3g', xticklabels=['1-1', '2-0', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2'], yticklabels=['     Worlds', '     Week 6', '     Week 5', '     Week 4', '     Week 3', '     Week 2', '     Week 1'])
+axis.set(xlabel='Ranking Point scores', ylabel='')
+plt.show()
