@@ -18,7 +18,7 @@ def getRequest(r):
 
 
 session = CacheControl(requests.Session())
-session.headers.update({'X-TBA-Auth-Key': '9VPYK2JYrepUcCyy4TqKAxgicINJdbYEy7qjtvi9vm70RHvShu3dc1vcnsARST11'})
+session.headers.update({'X-TBA-Auth-Key': 'archived :/'})
 
 
 

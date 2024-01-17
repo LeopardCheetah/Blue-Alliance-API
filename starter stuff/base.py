@@ -1,19 +1,13 @@
-# example file 
-
-import json # parser
+import json
 import requests 
-# http requests
-# let's pretend i have this package
 from cachecontrol import CacheControl
-# this is supposed to help or something 
-# look here https://github.com/frc1418/tbapy/blob/master/tbapy/main.py
+
 
 
 link = 'https://www.thebluealliance.com/api/v3'
 
 def getRequest(r):
     response = session.get(link + r)
-    # return the text version but after json format => list of dicts if requesting teams
     return json.loads(response.text)
 
 
@@ -22,7 +16,7 @@ session = CacheControl(requests.Session())
 session.headers.update({'X-TBA-Auth-Key': 'key'})
 
 
-dump = getRequest('/event/2023cafr/teams/simple') # Central Valley Regional
+dump = getRequest('/event/2023cafr/teams/simple')
 
 teams_ls = []
 for team_dict in dump:
