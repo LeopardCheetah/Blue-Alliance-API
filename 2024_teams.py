@@ -82,9 +82,8 @@ for match in dump:
 
 
 
-
+'''
 # 1. compare how many notes were scored in teleop vs auto
-
 note_comparison = []
 for i in range(c):
     auto = amp_counts[i][0] + amp_counts[i][2]
@@ -101,12 +100,9 @@ for i in range(c):
 note_comparison.sort()
 print(note_comparison)
 print("average teleop - auto note count: ", sum(note_comparison)/c)
-
-
-
-
 print()
 print()
+
 
 
 
@@ -122,7 +118,11 @@ for i in range(c):
 amp_v_speaker.sort()
 print(amp_v_speaker)
 print("avg num of notes scored more in speaker than in amp: ", sum(amp_v_speaker)/c)
-    
+print()
+print()
+
+
+
 
 
 # 3. total notes scored per match
@@ -133,4 +133,6 @@ for i in range(c):
 total_notes.sort()
 print(total_notes)
 print('avg num of notes/match scored:', sum(total_notes)/c)
-
+print()
+print()
+'''
