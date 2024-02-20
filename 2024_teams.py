@@ -24,14 +24,22 @@ key = f.readline().strip()
 # request header, basically prelimnary information about a request before its sent (sender basically)
 session = CacheControl(requests.Session())
 session.headers.update({'X-TBA-Auth-Key': key})
+print()
+print() 
+
+
+
+
+#################################################################
 
 
 
 dump = getRequest('/event/2024week0/matches')
 bad_matches = [0, 1, 2, 4, 5] # f1, f2, f3 don't exist on TBA and qm2 and qm3 have incorrect data
 
+amp_counts = []
+speaker_counts = []
 c = 0
-a = 0
 
 for match in range(len(dump)):
     # access using dump[match]
@@ -39,24 +47,56 @@ for match in range(len(dump)):
         continue
 
     m = dump[match]
+    s = m["score_breakdown"]
 
-    blue_auto = int(dump[match]["score_breakdown"]["blue"]["autoPoints"])
-    red_auto = int(dump[match]["score_breakdown"]["red"]["autoPoints"])
-
-    winner = dump[match]["winning_alliance"]
-
+    # investigate teleop amp counts
     c += 1
-    if winner == 'blue' and blue_auto > red_auto:
-        a += 1
-        continue
 
-    if winner == 'red' and red_auto > blue_auto:
-        a += 1
-        continue
+    blue_amp_auto = s["blue"]["autoAmpNoteCount"]
+    blue_amp = s["blue"]["teleopAmpNoteCount"]
+
+    red_amp_auto = s["red"]["autoAmpNoteCount"]
+    red_amp = s["red"]["teleopAmpNoteCount"]
     
-    print(dump[match]['key'])
+    # encode using (blue, red)
 
-print(a, c, a/c)
+    amp_counts.append([blue_amp_auto, blue_amp, red_amp_auto, red_amp])
+
+    b_sp_a = s["blue"]["autoSpeakerNoteCount"]
+    r_sp_a = s["red"]["autoSpeakerNoteCount"]
+
+    b_sp_t = s["blue"]["teleopSpeakerNoteCount"]
+    r_sp_t = s["red"]["teleopSpeakerNoteCount"]
+    
+    b_sp = s["blue"]["teleopSpeakerNoteAmplifiedCount"]
+    r_sp = s["red"]["teleopSpeakerNoteAmplifiedCount"]
+    
+    speaker_counts.append([b_sp_a, b_sp_t, b_sp, r_sp_a, r_sp_t, r_sp])
+
+
+# analysis time
+# amp_counts: [blue auto count, blue teleop, red auto, red teleop]
+# speaker_counts: [blue auto, blue teleop (unamplified), blue amplified] + red
+# c total matches
+
+
+# 1. compare how many notes were scored in teleop vs auto
+note_comparison = []
+for i in range(c):
+    auto = amp_counts[i][0] + amp_counts[i][2]
+    auto += speaker_counts[i][0] + amp_counts[i][3]
+
+    # formula used here is 
+    # sum of both lists == num of notes scored == teleop note number + auto note num
+    # so just subtract auto note num
+
+    teleop = sum(amp_counts[i]) + sum(speaker_counts[i]) - auto 
+
+    note_comparison.append(teleop - auto)
+
+note_comparison.sort()
+print(note_comparison)
+print("average teleop - auto note count: ", sum(note_comparison)/c)
 
     
     
