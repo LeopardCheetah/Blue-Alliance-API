@@ -35,19 +35,20 @@ print()
 
 
 dump = getRequest('/event/2024week0/matches')
-bad_matches = [0, 1, 2, 4, 5] # f1, f2, f3 don't exist on TBA and qm2 and qm3 have incorrect data
+bad_match_ids = ['_qm2', '_qm3', 'f1m1', 'f1m2', 'f1m3'] # f1, f2, f3 don't exist on TBA and qm2 and qm3 have incorrect data
 
 amp_counts = []
 speaker_counts = []
 c = 0
 
-for match in range(len(dump)):
-    # access using dump[match]
-    if match in bad_matches:
+for match in dump:
+
+    if match['key'][-4:] in bad_match_ids:
         continue
 
-    m = dump[match]
+    m = match # preserving old code
     s = m["score_breakdown"]
+
 
     # investigate teleop amp counts
     c += 1
@@ -70,7 +71,7 @@ for match in range(len(dump)):
     
     b_sp = s["blue"]["teleopSpeakerNoteAmplifiedCount"]
     r_sp = s["red"]["teleopSpeakerNoteAmplifiedCount"]
-    
+
     speaker_counts.append([b_sp_a, b_sp_t, b_sp, r_sp_a, r_sp_t, r_sp])
 
 
@@ -80,7 +81,10 @@ for match in range(len(dump)):
 # c total matches
 
 
+
+
 # 1. compare how many notes were scored in teleop vs auto
+
 note_comparison = []
 for i in range(c):
     auto = amp_counts[i][0] + amp_counts[i][2]
@@ -98,6 +102,35 @@ note_comparison.sort()
 print(note_comparison)
 print("average teleop - auto note count: ", sum(note_comparison)/c)
 
+
+
+
+print()
+print()
+
+
+
+
+# 2. compare amp vs speaker
+amp_v_speaker = []
+for i in range(c):
+    amp = sum(amp_counts[i])
+    speaker = sum(speaker_counts[i])
+
+    amp_v_speaker.append(speaker - amp)
+
+amp_v_speaker.sort()
+print(amp_v_speaker)
+print("avg num of notes scored more in speaker than in amp: ", sum(amp_v_speaker)/c)
     
-    
+
+
+# 3. total notes scored per match
+total_notes = []
+for i in range(c):
+    total_notes.append(sum(amp_counts[i]) + sum(speaker_counts[i]))
+
+total_notes.sort()
+print(total_notes)
+print('avg num of notes/match scored:', sum(total_notes)/c)
 
