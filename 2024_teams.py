@@ -18,56 +18,46 @@ def getRequest(r):
     return json.loads(response.text)
 
 
+f = open("secrets.txt", "r") # to replace with wherever u store your secrets
+key = f.readline().strip()
+
 # request header, basically prelimnary information about a request before its sent (sender basically)
 session = CacheControl(requests.Session())
-session.headers.update({'X-TBA-Auth-Key': 'aEEC4ct1GfXOdhbDlVtJtUlzhti9e0aWEf2d1bkp4etqQoomWfTkies9xu7nAND1'})
+session.headers.update({'X-TBA-Auth-Key': key})
 
 
 
-# gets teams from sfr that are going to a w1 comp
-'''
-dump = getRequest('/event/2024casf/teams/simple')
+dump = getRequest('/event/2024week0/matches')
+bad_matches = [0, 1, 2, 4, 5] # f1, f2, f3 don't exist on TBA and qm2 and qm3 have incorrect data
 
-ls = []
-for team_dict in dump:
-    team_num = team_dict['team_number']
+c = 0
+a = 0
 
-    more_events = getRequest(f'/team/frc{team_num}/events/2024')
+for match in range(len(dump)):
+    # access using dump[match]
+    if match in bad_matches:
+        continue
 
-    # dict list
-    m = 1
-    for event in more_events:
-        m = min(m, int(event['week']))
+    m = dump[match]
 
-    if m < 1:
-        ls.append(team_num)
+    blue_auto = int(dump[match]["score_breakdown"]["blue"]["autoPoints"])
+    red_auto = int(dump[match]["score_breakdown"]["red"]["autoPoints"])
 
-print(ls) 
-'''
+    winner = dump[match]["winning_alliance"]
 
+    c += 1
+    if winner == 'blue' and blue_auto > red_auto:
+        a += 1
+        continue
 
-dump = getRequest('/event/2024cafr/teams/simple')
+    if winner == 'red' and red_auto > blue_auto:
+        a += 1
+        continue
+    
+    print(dump[match]['key'])
 
-ls = []
-for team_dict in dump:
-    team_num = team_dict['team_number']
+print(a, c, a/c)
 
-    more_events = getRequest(f'/team/frc{team_num}/events/2024')
+    
+    
 
-
-    m = 3
-    for event in more_events:
-        # worlds is null
-        name = []
-        try:
-            if int(event['week']) < 3:
-                m = min(m, int(event['week']))
-                name.append(event['name'])
-        except:
-            pass
-
-    if m < 3:
-        ls.append((team_num, name))
-
-ls.sort()
-print(ls) 
