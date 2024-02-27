@@ -75,6 +75,11 @@ speaker_counts = []
 c = 0
 
 
+# NOTE: this list has length 2n
+# Classification scheme: [blue score, red score, ...]
+scores = []
+
+
 ## Note: 
 ## Bottom two parameters are ONLY for section 4 (see below)
 ties = 0
@@ -82,12 +87,15 @@ a = 0
 ## 
 
 
+# Used for Section 7, rp
+rp = []
+
 
 for match in dump:
 
+
     m = match # preserving old code
     s = m["score_breakdown"]
-
 
     # investigate teleop amp counts
     c += 1
@@ -113,6 +121,22 @@ for match in dump:
 
     speaker_counts.append([b_sp_a, b_sp_t, b_sp, r_sp_a, r_sp_t, r_sp])
 
+
+    # blue_rp = s["blue"]["rp"]
+    # red_rp = s["red"]["rp"]
+    # rp.append(blue_rp)
+    # rp.append(red_rp)
+
+    blue_rp = s["blue"]["rp"]
+    red_rp = s["red"]["rp"]
+    rp.append(blue_rp+red_rp)
+    
+
+    blue_score = s["blue"]["totalPoints"]
+    red_score = s["red"]["totalPoints"]
+
+    scores.append(blue_score)
+    scores.append(red_score)
 
 
 
@@ -209,6 +233,14 @@ print_stats(auton_scored, "Average num of notes scored in autonomous")
 
 
 
-# figure out avg points
+# 6. Average scores
+print_stats(scores, "Average points per alliance")
+
+
+
+# 7. Average RPs
+print_stats(rp, "RP statistics")
+
+# 7. endgame points/climbs
 # avg robots climbed per match
 
