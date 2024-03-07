@@ -359,7 +359,7 @@ for i in range(c):
     note_comparison.append(teleop - auto)
 
 
-print_stats(note_comparison, 'Teleop Note Count - Auto Note Count')
+print_stats(note_comparison, 'Teleop Note Count - Auto Note Count (match avg)')
 
 
 
@@ -372,7 +372,7 @@ for i in range(c):
 
     amp_v_speaker.append(speaker - amp)
 
-print_stats(amp_v_speaker, "Speaker note count - Amp note count")
+print_stats(amp_v_speaker, "Speaker note count - Amp note count (match avg)")
 
 
 
@@ -405,7 +405,7 @@ for i in range(c):
     auton_scored.append(amp_counts[i][0] + speaker_counts[i][0]) # blue alliance auton
     auton_scored.append(amp_counts[i][2] + speaker_counts[i][3]) # red alliance auton
 
-print_stats(auton_scored, "Average num of notes scored in autonomous")
+print_stats(auton_scored, "Average num of notes scored in autonomous (per alliance)")
 
 
 
@@ -420,12 +420,12 @@ print_stats(rp, "Alliance RP statistics")
 
 
 # 8. Average total RPs
-print_stats(rp_2, "Total RP Statistics")
+print_stats(rp_2, "Match RP Statistics")
 
 
 # 9. rp breakdown for each set
-print_stats(melody_rp, "Melody RP Statistics (Quals)")
-print_stats(ensemble_rp, "Ensemble RP Statistics (Quals)")
+print_stats(melody_rp, "Melody RP Statistics (Quals) (Alliance)")
+print_stats(ensemble_rp, "Ensemble RP Statistics (Quals) (Alliance)")
 
 
 
