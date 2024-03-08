@@ -1,4 +1,14 @@
 # Blue-Alliance-API
-I try making an API for The Blue Alliance. This may be used for FRC 840.
 
-This project is Powered by [The Blue Alliance](https://www.thebluealliance.com/)
+---
+
+This project is Powered by [The Blue Alliance](https://www.thebluealliance.com/).
+
+---
+
+
+Use starter stuff folder for some basic templates, and archive is just code from past years.
+
+
+
+I use the files here for some analysis about the state of the FRC game.
