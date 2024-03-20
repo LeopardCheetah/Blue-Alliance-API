@@ -105,7 +105,7 @@ for match_num in our_matches:
             
             if ls[m] == match_num:
                 try:
-                    for j in range(3):
+                    for j in range(lookahead_num):
                         if opp in to_watch[ls[m+1+j]]:
                             continue
                         to_watch[ls[m+1+j]].append(opp)
