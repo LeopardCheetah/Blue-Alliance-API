@@ -25,8 +25,8 @@ print()
 
 ################################
 
-event_key = '2024casf' # casf -- san fran, cafr -- fresno
-lookahead_num = 3 # how many matches you want to look ahead
+event_key = '2024cafr' # casf -- san fran, cafr -- fresno
+lookahead_num = 4 # how many matches you want to look ahead
 
 
 
@@ -75,7 +75,7 @@ def find_team_matches(team_num):
 to_watch = [[] for _ in range(len(matches) + 1)]
 
 
-
+c = 0
 # ok now let's find teams that we're against :/
 our_matches = find_team_matches(840)
 
@@ -96,6 +96,7 @@ for match_num in our_matches:
     # ok now find their comp matches 
 
 
+
     for opp in opps:
         ls = find_team_matches(opp)[::-1]
         
@@ -106,6 +107,7 @@ for match_num in our_matches:
             if ls[m] == match_num:
                 try:
                     for j in range(lookahead_num):
+                        c += 1
                         if opp in to_watch[ls[m+1+j]]:
                             continue
                         to_watch[ls[m+1+j]].append(opp)
@@ -117,5 +119,8 @@ for match_num in our_matches:
 
 for i in range(len(to_watch)):
     print(i, '\t', to_watch[i])
+
+print()
+print(c)
             
 

@@ -3,9 +3,6 @@ import requests
 from cachecontrol import CacheControl
 
 link = 'https://www.thebluealliance.com/api/v3'
-print('\nEvents parsed:\n')
-
-
 
 # note that the response is always in list format
 # depending on the content of the thing ur requesting, the elements in that list can either be dictionaries or strings
@@ -17,10 +14,18 @@ def getRequest(r):
 
 
 
+
+import os
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+rel_path = script_dir[:-6]
+
+
+f = open(rel_path+"secrets.txt", "r")
+key = f.readline().strip()
+
+# request header, basically prelimnary information about a request before its sent (sender basically)
 session = CacheControl(requests.Session())
-session.headers.update({'X-TBA-Auth-Key': 'archived :/'})
-
-
+session.headers.update({'X-TBA-Auth-Key': key})
 
 
 
@@ -41,6 +46,7 @@ todos:
 - sort them in order of weeks
 - get there matches and filter out the non 4-2 rp matches (or we could see the trend of winning/losing matches over time and stuff)
 '''
+print('\nEvents parsed:\n')
 
 
 request1 = getRequest('/events/2023')

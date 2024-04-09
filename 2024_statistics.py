@@ -77,27 +77,32 @@ event_list = ['2024bcvi']
 event_list = ['2024bcvi', '2024brbr', '2024caph', '2024casj', '2024cthar', '2024flwp', '2024inmis', '2024isde1', '2024isde2', '2024isde3', '2024mibat', '2024miber', '2024mibkn', '2024miket', '2024mimil', '2024mndu', '2024mndu2', '2024mxmo', '2024ncwak', '2024nhgrs', '2024njfla', '2024orore', '2024paca', '2024pahat', '2024qcmo', '2024tnkn', '2024txkat', '2024txwac', '2024utwv', '2024vaash', '2024vabla', '2024wasno']
 
 
-'''
 # get all week 1 events
 # comment this out if you don't want this!
 
-all_event_keys = getRequest('/events/2024/keys')
 
-# uhm this is sorta wasteful but i dont wanna check in the comp so yeah
-# there's probably a way to refactor everything for less requests but ehhhhh
+
+r1 = getRequest('/events/2024')
 
 event_list = []
 
-for e in all_event_keys:
-    r = getRequest(f'/event/{e}')
-
-    # ok so the index is off by 1
-    if r['week'] == 0:
-        event_list.append(e)
+for event_dict in r1:
 
 
-print(event_list)
-'''
+    week = event_dict["week"]
+    key = event_dict["key"]
+
+    if week is None and event_dict["parent_event_key"] is not None:
+        continue
+    
+    if week is None:
+        continue
+
+    event_list.append(key)
+
+
+
+
 ########################################################################
 
 
