@@ -1,0 +1,189 @@
+import json 
+import requests 
+from cachecontrol import CacheControl
+
+link = 'https://www.thebluealliance.com/api/v3'
+
+
+
+# note that the response is always in list format
+# depending on the content of the thing ur requesting, the elements in that list can either be dictionaries or strings
+def getRequest(r):
+
+    response = session.get(link + r)
+    # return the text version but after json format => list of dicts if requesting teams
+    return json.loads(response.text)
+
+
+
+
+
+
+# we in 2025 now
+
+
+env_key_file = open("key.txt", "r") # todo: switch to .env packages
+key = env_key_file.readline().strip()
+
+# request header, basically prelimnary information about a request before its sent (sender basically)
+session = CacheControl(requests.Session())
+session.headers.update({'X-TBA-Auth-Key': key})
+
+#######################
+
+
+
+'''
+
+
+event_list = getRequest('/events/2025')
+
+w1_event_codes = []
+
+for _event in event_list:
+    # _event is a dict describing each event
+    # see 2025_json_format.txt for some more information
+
+
+    _event_week = _event["week"]
+    _event_key = _event["key"]
+    _event_type = _event["event_type_string"]
+
+
+    # weeks are 0 indexes
+    # week 1 events --> event_week = 0
+    if (_event_type == "Regional" or _event_type == "District") and _event_week == 0:
+        w1_event_codes.append(_event_key)
+    
+    # finish adding all w1 event codes on here
+
+
+
+# start getting rp data
+w1_rp_data = [0]*21 # 21st index for total matches
+total_match_count = 0
+
+for _event_key in w1_event_codes:
+
+    # _event_key is a string and it is the event id (e.g. caoc)
+    
+    _event_match_info = getRequest(f'/event/{_event_key}/matches')
+    # request = getRequest(f'/event/2024cabe/matches')
+
+    # this is now a massive dictionary of just every match that ever happened
+
+    _match_count = 0
+    for _match in _event_match_info:
+        # ok now we can dig into each individual match
+
+        red_rp = -1
+        blue_rp = -1
+
+
+        if _match["comp_level"] != 'qm':
+            continue # filter out all the non-qualifcation matches
+
+        try:
+            blue_rp = _match["score_breakdown"]["blue"]["rp"]
+            red_rp = _match["score_breakdown"]["red"]["rp"]
+        except:
+            print('aaahh')
+            continue
+
+        _match_count += 1
+
+        # manually counting rp (from 2024/2023)
+        """
+        if red_rp + blue_rp < 2:
+            ############3
+            ############
+            #########3##
+
+            # for now im gonna skip this
+
+
+            continue
+            # gotta manually calculate the rp then
+            blue_rp = 0
+            red_rp = 0
+
+            # technically u need 6 links in champs but im going to gloss over that rq
+            # also im not gonna worry about the co-op grid since im lazy :/
+            if len(match["score_breakdown"]["blue"]["links"]) > 4:
+                blue_rp += 1
+            
+            if len(match["score_breakdown"]["red"]["links"]) > 4:
+                red_rp += 1
+
+            if match["winning_alliance"] == 'blue':
+                blue_rp += 2
+            
+            if match["winning_alliance"] == 'red':
+                red_rp += 2
+
+            if match["winning_alliance"] == '':
+                red_rp += 1
+                blue_rp += 1
+
+            if match["score_breakdown"]["red"]["totalChargeStationPoints"] > 25:
+                red_rp += 1
+            
+            if match["score_breakdown"]["blue"]["totalChargeStationPoints"] > 25:
+                blue_rp += 1
+            """
+
+        # rps are now "good numbers"
+        if blue_rp > red_rp:
+            red_rp, blue_rp = blue_rp, red_rp
+        
+        # now red_rp >= blue_rp for all
+        #  x   x    x   3-0, 4-0, 5-0, 6-0
+        #  x  1-1, 2-1, 3-1, 4-1, 5-1, 6-1
+        #  x   x   2-2, 3-2, 4-2, 5-2, 6-2
+        #  x   x    x   3-3, 4-3, 5-3, 6-3
+        #  x   x    x    x   4-4,  x    x  --- 4-4 is when both get auto/coral/barge rp but tie (1 + 3 / 1 + 3)
+
+
+
+        # todo: go from here
+        rp_total = 10*red_rp + blue_rp
+        rp_list_indexing = [11, 21, 22, 30, 31, 32, 33, 40, 41, 42, 43, 44, 50, 51, 52, 53, 60, 61, 62, 63]
+
+        w1_rp_data[rp_list_indexing.index(rp_total)] += 1    
+
+    total_match_count += _match_count
+
+w1_rp_data[20] = total_match_count
+
+# print(w1_rp_data)
+'''
+
+w1_rp_data = [[0]*20, [0]*20, [0]*20, [0]*20, [0]*20, [0]*20, [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42, 41, 15, 2]] # remove the total match count statistic
+
+
+
+
+
+
+# great rp_data is ready!!!
+# now i need to do some data analysis with it
+
+
+
+import numpy as np
+import pandas as pd
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+import seaborn as sns
+import seaborn.objects as so
+# seaborn
+
+w1_rp_data_grid = sns.heatmap(w1_rp_data, cmap = "crest", linewidths=0.5, annot=True, fmt='.4g', xticklabels=['1-1', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2', '4-3', '4-4', '5-0', '5-1', '5-2', '5-3', '6-0', '6-1', '6-2', '6-3'], yticklabels=["Champs", "Week 6", "Week 5", "Week 4", "Week 3", "Week 2", "Week 1"])
+
+
+
+
+w1_rp_data_grid.set(xlabel='Qual RP Scores', ylabel='')
+plt.show()
