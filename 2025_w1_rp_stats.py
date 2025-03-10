@@ -32,7 +32,7 @@ session.headers.update({'X-TBA-Auth-Key': key})
 #######################
 
 
-'''
+
 
 event_list = getRequest('/events/2025')
 
@@ -74,6 +74,7 @@ for _event_key in w1_event_codes:
 
     if _event_key == '2025isde3':
         continue # this regional hasn't ended
+
 
     for _match in _event_match_info:
         # ok now we can dig into each individual match
@@ -153,15 +154,30 @@ for _event_key in w1_event_codes:
         rp_total = 10*red_rp + blue_rp
         rp_list_indexing = [11, 21, 22, 30, 31, 32, 33, 40, 41, 42, 43, 44, 50, 51, 52, 53, 60, 61, 62, 63]
 
+
+
+        if rp_total == 63:
+            print(_match["key"], '63')
+        
+        if rp_total == 22:
+            print(_match["key"], '22')
+        if rp_total == 33:
+            print(_match["key"], '33')
+        if rp_total == 44:
+            print(_match["key"], '44')
+
+
         w1_rp_data[rp_list_indexing.index(rp_total)] += 1    
 
     total_match_count += _match_count
 
+    # print(_event_key, w1_rp_data) -- to get a week by week update
+
 w1_rp_data[20] = total_match_count
 
+print()
 print(w1_rp_data)
 quit()
-'''
 
 
 
@@ -170,6 +186,7 @@ quit()
 
 
 
+################### start heatmap collection
 
 
 
