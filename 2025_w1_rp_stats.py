@@ -32,9 +32,7 @@ session.headers.update({'X-TBA-Auth-Key': key})
 #######################
 
 
-
 '''
-
 
 event_list = getRequest('/events/2025')
 
@@ -52,7 +50,7 @@ for _event in event_list:
 
     # weeks are 0 indexes
     # week 1 events --> event_week = 0
-    if (_event_type == "Regional" or _event_type == "District") and _event_week == 0:
+    if (_event_type == "Regional" or _event_type == "District") and _event_week == 1:
         w1_event_codes.append(_event_key)
     
     # finish adding all w1 event codes on here
@@ -73,6 +71,10 @@ for _event_key in w1_event_codes:
     # this is now a massive dictionary of just every match that ever happened
 
     _match_count = 0
+
+    if _event_key == '2025isde3':
+        continue # this regional hasn't ended
+
     for _match in _event_match_info:
         # ok now we can dig into each individual match
 
@@ -88,6 +90,8 @@ for _event_key in w1_event_codes:
             red_rp = _match["score_breakdown"]["red"]["rp"]
         except:
             print('aaahh')
+            print()
+            print(_match, _event_match_info)
             continue
 
         _match_count += 1
@@ -155,19 +159,38 @@ for _event_key in w1_event_codes:
 
 w1_rp_data[20] = total_match_count
 
-# print(w1_rp_data)
+print(w1_rp_data)
+quit()
 '''
 
-w1_rp_data = [[0]*20, [0]*20, [0]*20, [0]*20, [0]*20, [0]*20, [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42, 41, 15, 2]] # remove the total match count statistic
 
 
 
 
 
+
+
+
+
+
+
+w1_rp_data = [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42, 41, 15, 2] # remove the total match count statistic
+w2_rp_data = [4, 0, 1, 336, 154, 17, 1, 483, 298, 76, 1, 0, 293, 228, 59, 3, 41, 55, 21, 1]
+
+
+total_rp_data = list()
+total_rp_data.append(w1_rp_data)
+total_rp_data.append(w2_rp_data)
+
+
+# add leading zeroes
+for _ in range(7 - len(total_rp_data)):
+    total_rp_data.append([0]*20)
+
+total_rp_data = total_rp_data[::-1]
 
 # great rp_data is ready!!!
 # now i need to do some data analysis with it
-
 
 
 import numpy as np
@@ -180,10 +203,34 @@ import seaborn as sns
 import seaborn.objects as so
 # seaborn
 
-w1_rp_data_grid = sns.heatmap(w1_rp_data, cmap = "crest", linewidths=0.5, annot=True, fmt='.4g', xticklabels=['1-1', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2', '4-3', '4-4', '5-0', '5-1', '5-2', '5-3', '6-0', '6-1', '6-2', '6-3'], yticklabels=["Champs", "Week 6", "Week 5", "Week 4", "Week 3", "Week 2", "Week 1"])
+total_rp_data_grid = sns.heatmap(total_rp_data, cmap = "crest", linewidths=0.5, annot=True, fmt='.4g', xticklabels=['1-1', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2', '4-3', '4-4', '5-0', '5-1', '5-2', '5-3', '6-0', '6-1', '6-2', '6-3'], yticklabels=["Champs", "Week 6", "Week 5", "Week 4", "Week 3", "Week 2", "Week 1"])
+
+
+total_rp_data_grid.set(xlabel='Qual RP Scores', ylabel='')
+plt.show()
 
 
 
+# get normalized rp
+normalized_total_rp_data = list()
 
-w1_rp_data_grid.set(xlabel='Qual RP Scores', ylabel='')
+for _i in range(7):
+    # 7 weeks
+    normalized_total_rp_data.append([0]*20)
+    if sum(total_rp_data[_i]) == 0:
+        # there's literally nothing in the list
+        continue
+    
+    for _j in range(20):
+        # length 20 list
+        normalized_total_rp_data[_i][_j] = 100*round(total_rp_data[_i][_j]/sum(total_rp_data[_i]), 4)
+        # turn into percentages
+        # rounding normalizes data
+
+
+
+normalized_rp_data_grid = sns.heatmap(normalized_total_rp_data, vmin = 0, vmax = 25, cmap = "crest", linewidths=0.5, annot=True, fmt='.4g', xticklabels=['1-1', '2-1', '2-2', '3-0', '3-1', '3-2', '3-3', '4-0', '4-1', '4-2', '4-3', '4-4', '5-0', '5-1', '5-2', '5-3', '6-0', '6-1', '6-2', '6-3'], yticklabels=["Champs", "Week 6", "Week 5", "Week 4", "Week 3", "Week 2", "Week 1"])
+
+
+normalized_rp_data_grid.set(xlabel='Normalized Qual RP Scores', ylabel='')
 plt.show()
