@@ -34,6 +34,8 @@ session.headers.update({'X-TBA-Auth-Key': key})
 
 
 
+
+
 event_list = getRequest('/events/2025')
 
 w1_event_codes = []
@@ -71,9 +73,6 @@ for _event_key in w1_event_codes:
     # this is now a massive dictionary of just every match that ever happened
 
     _match_count = 0
-
-    if _event_key == '2025isde3':
-        continue # this regional hasn't ended
 
 
     for _match in _event_match_info:
@@ -192,7 +191,7 @@ quit()
 
 
 w1_rp_data = [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42, 41, 15, 2] # remove the total match count statistic
-w2_rp_data = [4, 0, 1, 336, 154, 17, 1, 483, 298, 76, 1, 0, 293, 228, 59, 3, 41, 55, 21, 1]
+w2_rp_data = [4, 0, 1, 336, 159, 17, 1, 486, 303, 79, 1, 0, 296, 243, 67, 5, 44, 58, 27, 3]
 
 
 total_rp_data = list()

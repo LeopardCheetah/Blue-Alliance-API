@@ -388,7 +388,7 @@ match json structure (after querying "/event/[key]/matches")
         "type": "youtube"
       }
     ],
-    "winning_alliance": "red"
+    "winning_alliance": "red" --- if a tie, this string will be empty ("winning_alliance": "")
   }
 ]
   
