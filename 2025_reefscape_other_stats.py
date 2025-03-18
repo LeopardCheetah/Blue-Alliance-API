@@ -55,7 +55,7 @@ for _event in event_list:
     # weeks are 0 indexed
     # week 1 events --> event_week = 0
     # only allow w1/w2 events to be queried
-    if (_event_type == "Regional" or _event_type == "District") and _event_week in [0, 1]:
+    if (_event_type == "Regional" or _event_type == "District") and _event_week in [0, 1, 2]:
         event_codes.append(_event_key)
     
 
@@ -107,6 +107,17 @@ for _event_key in event_codes:
         
 
         # did red or blue win more?
+
+        if _match["winning_alliance"] is None:
+            # is tba has not finished this qm (looking at you talahassee regional)
+            continue
+
+        try:
+            if _match["score_breakdown"]["red"]["totalPoints"] is None:
+                continue 
+        except:
+            continue
+        
         if _match["winning_alliance"] == "red":
             if _is_qm:
                 red_qm_wins += 1

@@ -33,7 +33,7 @@ session.headers.update({'X-TBA-Auth-Key': key})
 
 
 
-
+'''
 
 
 event_list = getRequest('/events/2025')
@@ -52,7 +52,7 @@ for _event in event_list:
 
     # weeks are 0 indexes
     # week 1 events --> event_week = 0
-    if (_event_type == "Regional" or _event_type == "District") and _event_week == 1:
+    if (_event_type == "Regional" or _event_type == "District") and _event_week == 2:
         w1_event_codes.append(_event_key)
     
     # finish adding all w1 event codes on here
@@ -96,45 +96,7 @@ for _event_key in w1_event_codes:
 
         _match_count += 1
 
-        # manually counting rp (from 2024/2023)
-        """
-        if red_rp + blue_rp < 2:
-            ############3
-            ############
-            #########3##
-
-            # for now im gonna skip this
-
-
-            continue
-            # gotta manually calculate the rp then
-            blue_rp = 0
-            red_rp = 0
-
-            # technically u need 6 links in champs but im going to gloss over that rq
-            # also im not gonna worry about the co-op grid since im lazy :/
-            if len(match["score_breakdown"]["blue"]["links"]) > 4:
-                blue_rp += 1
-            
-            if len(match["score_breakdown"]["red"]["links"]) > 4:
-                red_rp += 1
-
-            if match["winning_alliance"] == 'blue':
-                blue_rp += 2
-            
-            if match["winning_alliance"] == 'red':
-                red_rp += 2
-
-            if match["winning_alliance"] == '':
-                red_rp += 1
-                blue_rp += 1
-
-            if match["score_breakdown"]["red"]["totalChargeStationPoints"] > 25:
-                red_rp += 1
-            
-            if match["score_breakdown"]["blue"]["totalChargeStationPoints"] > 25:
-                blue_rp += 1
-            """
+        ######
 
         # rps are now "good numbers"
         if blue_rp > red_rp:
@@ -157,6 +119,8 @@ for _event_key in w1_event_codes:
 
         if rp_total == 63:
             print(_match["key"], '63')
+        if rp_total == 43:
+            print(_match["key"], '43')
         
         if rp_total == 22:
             print(_match["key"], '22')
@@ -181,7 +145,7 @@ quit()
 
 
 
-
+'''
 
 
 
@@ -192,11 +156,12 @@ quit()
 
 w1_rp_data = [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42, 41, 15, 2] # remove the total match count statistic
 w2_rp_data = [4, 0, 1, 336, 159, 17, 1, 486, 303, 79, 1, 0, 296, 243, 67, 5, 44, 58, 27, 3]
-
+w3_rp_data = [5, 11, 7, 262, 163, 35, 1, 484, 354, 119, 1, 0, 356, 388, 184, 12, 104, 117, 58, 12]
 
 total_rp_data = list()
 total_rp_data.append(w1_rp_data)
 total_rp_data.append(w2_rp_data)
+total_rp_data.append(w3_rp_data)
 
 
 # add leading zeroes
