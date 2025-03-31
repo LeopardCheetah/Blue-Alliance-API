@@ -32,7 +32,6 @@ session.headers.update({'X-TBA-Auth-Key': key})
 #######################
 
 
-
 '''
 
 event_list = getRequest('/events/2025')
@@ -51,7 +50,7 @@ for _event in event_list:
 
     # weeks are 0 indexes
     # week 1 events --> event_week = 0
-    if (_event_type == "Regional" or _event_type == "District") and _event_week == 3:
+    if (_event_type == "Regional" or _event_type == "District") and _event_week == 4:
         w1_event_codes.append(_event_key)
     
     # finish adding all w1 event codes on here
@@ -142,9 +141,7 @@ print()
 print(w1_rp_data)
 quit()
 
-
 '''
-
 
 
 
@@ -157,12 +154,14 @@ w1_rp_data = [5, 5, 1, 214, 109, 24, 0, 386, 269, 68, 0, 0, 250, 271, 95, 1, 42,
 w2_rp_data = [4, 0, 1, 336, 159, 17, 1, 486, 303, 79, 1, 0, 296, 243, 67, 5, 44, 58, 27, 3]
 w3_rp_data = [5, 11, 7, 262, 163, 35, 1, 484, 354, 119, 1, 0, 356, 388, 184, 12, 104, 117, 58, 12]
 w4_rp_data = [0, 8, 5, 160, 111, 33, 1, 388, 418, 144, 4, 0, 314, 452, 234, 12, 105, 175, 108, 35]
+w5_rp_data = [0, 3, 2, 50, 86, 24, 5, 207, 293, 112, 3, 0, 205, 359, 194, 4, 88, 148, 117, 31]
 
 total_rp_data = list()
 total_rp_data.append(w1_rp_data)
 total_rp_data.append(w2_rp_data)
 total_rp_data.append(w3_rp_data)
 total_rp_data.append(w4_rp_data)
+total_rp_data.append(w5_rp_data)
 
 # add leading zeroes
 for _ in range(7 - len(total_rp_data)):
