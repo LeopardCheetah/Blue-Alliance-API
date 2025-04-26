@@ -55,7 +55,7 @@ for _event in event_list:
     # weeks are 0 indexed
     # week 1 events --> event_week = 0
     # only allow w1/w2 events to be queried
-    if (_event_type == "Regional" or _event_type == "District") and _event_week in [i for i in range(6)]:
+    if _event_week in [i for i in range(6)] or (_event_week is None and _event_type[0] == 'C'):
         event_codes.append(_event_key)
     
 
